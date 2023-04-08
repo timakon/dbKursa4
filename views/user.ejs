@@ -4,6 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User: <%= user.name %></title>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+          margin: 0;
+          padding: 0;
+        }
+    
+        a {
+          text-decoration: none;
+          color: #007bff;
+        }
+    
+        a:hover {
+          text-decoration: underline;
+        }
+    
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+    
+        h1, h2 {
+          color: #333;
+        }
+    
+        p {
+          color: #666;
+          line-height: 1.6;
+        }
+    
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+    
+        input, textarea, select {
+          display: block;
+          width: 80%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+        }
+    
+        button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+    
+        button:hover {
+          background-color: #0056b3;
+        }
+    
+        ul {
+          list-style-type: none;
+          padding: 0;
+        }
+    
+        li {
+          background-color: white;
+          padding: 15px;
+          margin-bottom: 10px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+      </style>
 </head>
 <body>
 
@@ -34,14 +104,43 @@
                 // обработка ошибки от сервера
             }
         });
-    </script>
+        const postForm = document.querySelector('#post-form');
+    postForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    <h1>User: <%= user.name %></h1>
-    <p>Email: <%= user.bio %></p>
-    <p>Role: <%= user.gender %></p>
+        const data = {
+            content: postForm.elements.content.value,
+            user_id: '<%= user._id %>'
+        };
+
+        const response = await fetch(postForm.action, {
+            method: postForm.method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+            // обработка успешного ответа от сервера
+            const result = await response.json();
+            console.log(result);
+            // Перенаправление пользователя на другую страницу, если это необходимо
+            window.location.href = '/profile/<%= user._id %>';
+        } else {
+            // обработка ошибки от сервера
+            console.error('Ошибка при создании поста');
+        }
+    });
+
+    </script>
+    <a href="/users">Вернуться назад</a>
+    <h1>Имя: <%= user.name %></h1>
+    <p>Биография: <%= user.bio %></p>
+    <p>Гендер: <%= user.gender %></p>
 
     <h2>Create/Edit Profile</h2>
-    <form id="profile-form" method="POST" action="/profile/6431b941d17e07354326abdb">
+    <form id="profile-form" method="POST" action="/profile/<%= user._id %>">
         <input type="hidden" name="id" value="<%= user._id %>">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -60,5 +159,24 @@
         <br>
         <button type="submit">Submit</button>
       </form>
+
+      <h2>Create a new post</h2>
+      <form id="post-form" method="POST" action="/posts">
+        <input type="hidden" name="user_id" value="<%= user._id %>">
+        <label for="content">Content:</label>
+        <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+        <br>
+        <button type="submit">Create post</button>
+      </form>
+
+      <h2>Посты пользователя</h2>
+    <ul>
+        <% posts.forEach(post => { %>
+            <li>
+                <p><%= post.text %></p>
+            </li>
+        <% }); %>
+    </ul>
+
 </body>
 </html>

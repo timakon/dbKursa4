@@ -1,6 +1,7 @@
 const express = require('express');
 const routes = require('./routes');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 
 const { mongoDb } = require('./db');
 
@@ -14,8 +15,15 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
+app.use(cookieParser());
+
+
 app.use(express.json()); // Заменили body-parser на express.json()
 app.use(express.urlencoded({ extended: false })); // Заменили body-parser на express.urlencoded()
+
+app.get('/', (req, res) => {
+  res.render('main');
+});
 app.use('/', routes);
 
 

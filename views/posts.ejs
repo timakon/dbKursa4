@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Посты</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      color: #333;
+    }
+
+    p {
+      color: #666;
+      line-height: 1.6;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input, textarea, select {
+      display: block;
+      width: 80%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    }
+  </style>
+  <script>
+    function getCookie(name) {
+      const value = "; " + document.cookie;
+      const parts = value.split("; " + name + "=");
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    const userRole = getCookie('userRole');
+
+    async function deletePost(postId) {
+      try {
+        const response = await fetch(`/posts/${postId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          // Успешное удаление поста
+          window.location.reload();
+        } else {
+          // Обработка ошибки от сервера
+          console.error('Ошибка при удалении поста');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const deleteButtons = document.querySelectorAll('[data-post-id]');
+
+      if (userRole === 'admin' || userRole === 'moderator') {
+        deleteButtons.forEach(button => {
+          button.style.display = 'inline-block';
+          button.addEventListener('click', (event) => {
+            const postId = event.target.getAttribute('data-post-id');
+            deletePost(postId);
+          });
+        });
+      }
+    });
+  </script>
+</head>
+<body>
+  <a href="/">Вернуться назад</a>
+  <h1>Посты</h1>
+  <ul>
+    <% posts.forEach(post => { %>
+      <li>
+        <p>Автор: <%= post.user_id.username %></p>
+        <p><%= post.text %></p>
+        <button data-post-id="<%= post._id %>">удалить</button>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

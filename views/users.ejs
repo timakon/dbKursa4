@@ -5,13 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User List</title>
 
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          background-color: #f0f0f0;
+          margin: 0;
+          padding: 0;
+        }
+    
+        a {
+          text-decoration: none;
+          color: #007bff;
+        }
+    
+        a:hover {
+          text-decoration: underline;
+        }
+    
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+        }
+    
+        h1, h2 {
+          color: #333;
+        }
+    
+        p {
+          color: #666;
+          line-height: 1.6;
+        }
+    
+        label {
+          display: block;
+          margin-bottom: 5px;
+        }
+    
+        input, textarea, select {
+          display: block;
+          width: 80%;
+          padding: 10px;
+          margin-bottom: 20px;
+          border: 1px solid #ccc;
+        }
+    
+        button {
+          background-color: #007bff;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+    
+        button:hover {
+          background-color: #0056b3;
+        }
+    
+        ul {
+          list-style-type: none;
+          padding: 0;
+        }
+    
+        li {
+          background-color: white;
+          padding: 15px;
+          margin-bottom: 10px;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        }
+    </style>
+
+    <script>
+function getCookie(name) {
+      const value = "; " + document.cookie;
+      const parts = value.split("; " + name + "=");
+      if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+
+    const userRole = getCookie('userRole');
+
+    async function deleteUser(userId) {
+      try {
+        const response = await fetch(`/users/${userId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.ok) {
+          // Успешное удаление поста
+          window.location.reload();
+        } else {
+          // Обработка ошибки от сервера
+          console.error('Ошибка при удалении поста');
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const deleteButtons = document.querySelectorAll('[data-user-id]');
+
+      if (userRole === 'admin' || userRole === 'moderator') {
+        deleteButtons.forEach(button => {
+          button.style.display = 'inline-block';
+          button.addEventListener('click', (event) => {
+            const user = event.target.getAttribute('data-user-id');
+            deleteUser(userId);
+          });
+        });
+      }
+    });
+    </script>
+    
+
 </head>
 <body>
+    <a href="/">Вернуться назад</a>
     <h1>User List</h1>
+    <a href="/users/set-admin-role">Админ</a>
+    <a href="/users/set-moderator-role">Модер</a>
+    <a href="/users/set-user-role">Просто юзер</a>
+    <a href="/users/check">Чек</a>
     <ul>
         <% users.forEach(user => { %>
             <li>
                 <a href="/profile/<%= user._id %>"><%= user.username %></a>
+                <button data-user-id="<%= user._id %>">удалить</button>
             </li>
         <% }); %>
     </ul>

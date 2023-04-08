@@ -11,6 +11,9 @@ const groupRoutes = require('./sqlite/groupRoutes');
 const eventRoutes = require('./sqlite/eventRoutes');
 
 const profileRoutes = require('./mongodb/profileRoutes');
+const postsRoutes = require('./mongodb/postsRoutes');
+
+router.use('/posts', postsRoutes);
 
 router.use('/profile', profileRoutes);
 router.use('/users', userRoutes);
