@@ -3,15 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User: <%= user.username %></title>
+    <title>User: <%= user.name %></title>
 </head>
 <body>
 
     <script>
         const form = document.querySelector('#profile-form');
         form.addEventListener('submit', async (event) => {
-            const form = document.querySelector('#profile-form');
-            form.addEventListener('submit', async (event) => {
             event.preventDefault(); // предотвращает отправку формы в стандартном режиме
 
             const data = {
@@ -28,21 +26,22 @@
                 body: JSON.stringify(data),
             });
 
+            console.log(response)
+
             if (response.ok) {
                 // обработка успешного ответа от сервера
             } else {
                 // обработка ошибки от сервера
             }
-            });
         });
-      </script>
+    </script>
 
-    <h1>User: <%= user.username %></h1>
-    <p>Email: <%= user.email %></p>
-    <p>Role: <%= user.role %></p>
+    <h1>User: <%= user.name %></h1>
+    <p>Email: <%= user.bio %></p>
+    <p>Role: <%= user.gender %></p>
 
     <h2>Create/Edit Profile</h2>
-    <form id="profile-form" method="PUT" action="/profile/<%= user._id %>">
+    <form id="profile-form" method="POST" action="/profile/6431b941d17e07354326abdb">
         <input type="hidden" name="id" value="<%= user._id %>">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" required>
@@ -52,41 +51,14 @@
         <br>
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
+            <option value="">-- Please choose an option --</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="non-binary">Non-binary</option>
             <option value="prefer not to say">Prefer not to say</option>
         </select>
         <br>
-        <button type="submit" onclick="submitForm()">Submit</button>
-    </form>
+        <button type="submit">Submit</button>
+      </form>
 </body>
 </html>
-
-<!-- <style>
-    body {
-                font-family: 'Roboto', Arial, sans-serif;
-                line-height: 1.6;
-                margin: 0;
-                padding: 20px;
-                background-color: #f4f4f4;
-            }
-    
-            h1 {
-                font-size: 32px;
-                color: #444;
-                border-bottom: 2px solid #444;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-    
-            p {
-                font-size: 18px;
-                color: #555;
-                margin-bottom: 10px;
-            }
-    
-            p:last-child {
-                margin-bottom: 0;
-            }
-        </style> -->
