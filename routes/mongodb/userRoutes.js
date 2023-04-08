@@ -5,7 +5,7 @@ const userController = require('../../controllers/mongodb/userController');
 router.post('/register', userController.registerUser);
 router.get('/', userController.getUsers);
 
-router.get('/:id', userController.getUserById);
+// router.get('/:id', userController.getUserById);
 
 
 module.exports = router;

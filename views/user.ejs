@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User: <%= user.username %></title>
+</head>
+<body>
+
+    <script>
+        const form = document.querySelector('#profile-form');
+        form.addEventListener('submit', async (event) => {
+            const form = document.querySelector('#profile-form');
+            form.addEventListener('submit', async (event) => {
+            event.preventDefault(); // предотвращает отправку формы в стандартном режиме
+
+            const data = {
+                name: form.elements.name.value,
+                bio: form.elements.bio.value,
+                gender: form.elements.gender.value,
+            };
+
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (response.ok) {
+                // обработка успешного ответа от сервера
+            } else {
+                // обработка ошибки от сервера
+            }
+            });
+        });
+      </script>
+
+    <h1>User: <%= user.username %></h1>
+    <p>Email: <%= user.email %></p>
+    <p>Role: <%= user.role %></p>
+
+    <h2>Create/Edit Profile</h2>
+    <form id="profile-form" method="PUT" action="/profile/<%= user._id %>">
+        <input type="hidden" name="id" value="<%= user._id %>">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio" rows="4" cols="50" required></textarea>
+        <br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="non-binary">Non-binary</option>
+            <option value="prefer not to say">Prefer not to say</option>
+        </select>
+        <br>
+        <button type="submit" onclick="submitForm()">Submit</button>
+    </form>
+</body>
+</html>
+
+<!-- <style>
+    body {
+                font-family: 'Roboto', Arial, sans-serif;
+                line-height: 1.6;
+                margin: 0;
+                padding: 20px;
+                background-color: #f4f4f4;
+            }
+    
+            h1 {
+                font-size: 32px;
+                color: #444;
+                border-bottom: 2px solid #444;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+    
+            p {
+                font-size: 18px;
+                color: #555;
+                margin-bottom: 10px;
+            }
+    
+            p:last-child {
+                margin-bottom: 0;
+            }
+        </style> -->

@@ -10,6 +10,9 @@ const followRoutes = require('./mongodb/followRoutes');
 const groupRoutes = require('./sqlite/groupRoutes');
 const eventRoutes = require('./sqlite/eventRoutes');
 
+const profileRoutes = require('./mongodb/profileRoutes');
+
+router.use('/profile', profileRoutes);
 router.use('/users', userRoutes);
 router.use('/follows', followRoutes);
 router.use('/groups', groupRoutes);
