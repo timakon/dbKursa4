@@ -127,7 +127,7 @@
       <li>
         <p>Автор: <%= post.user_id.username %></p>
         <p><%= post.text %></p>
-        <button data-post-id="<%= post._id %>">удалить</button>
+        <button data-post-id="<%= post._id %>" style="display: none;">удалить</button>
       </li>
     <% }); %>
   </ul>

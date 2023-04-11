@@ -2,26 +2,22 @@ const express = require('express');
 const router = express.Router();
 
 
-const likeRoutes = require('./mongodb/likeRoutes');
-const searchHistoryRoutes = require('./sqlite/searchHistoryRoutes');
-const imageViewRoutes = require('./sqlite/imageViewRoutes');
-const userRoutes = require('./mongodb/userRoutes');
-const followRoutes = require('./mongodb/followRoutes');
-const groupRoutes = require('./sqlite/groupRoutes');
-const eventRoutes = require('./sqlite/eventRoutes');
 
+const userRoutes = require('./mongodb/userRoutes');
 const profileRoutes = require('./mongodb/profileRoutes');
 const postsRoutes = require('./mongodb/postsRoutes');
 
+
+router.use('/users', userRoutes);
+router.use('/profile', profileRoutes);
 router.use('/posts', postsRoutes);
 
-router.use('/profile', profileRoutes);
-router.use('/users', userRoutes);
-router.use('/follows', followRoutes);
+
+const groupRoutes = require('./sqlite/groupRoutes');
+const groupPostRoutes = require('./sqlite/postRoutes');
+
 router.use('/groups', groupRoutes);
-router.use('/events', eventRoutes);
-router.use('/search', searchHistoryRoutes);
-router.use('/images', imageViewRoutes);
-router.use('/likes', likeRoutes);
+router.use('/groups/:groupId/posts', groupPostRoutes);
+
 
 module.exports = router;

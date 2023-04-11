@@ -17,6 +17,10 @@ const Group = sequelize.define('group', {
   description: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  ownerId: {
+    type: DataTypes.STRING,
+    allowNull: false
   }
 });
 

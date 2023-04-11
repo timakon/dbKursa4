@@ -1,4 +1,5 @@
 const Group = require('../../models/sqlite/Group');
+const Post = require('../../models/sqlite/Post');
 
 // Создать новую группу
 exports.createGroup = async (req, res) => {
@@ -18,8 +19,23 @@ exports.createGroup = async (req, res) => {
 // Получить список групп
 exports.getGroups = async (req, res) => {
   try {
-    const groups = await Group.findAll();
-    res.status(200).json(groups);
+    const groups = await Group.findAll(); // Замените эту строку
+    const userRole = req.cookies.userRole;
+    res.render('groups', { groups, userRole });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Ошибка сервера' });
+  }
+};
+
+exports.getGroup = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+    const posts = await Post.findAll({ where: { groupId } }); // Получаем посты только для текущей группы
+    const currentUser = req.cookies.userId;
+    const group = await Group.findByPk(groupId);
+    
+    res.render('group', { group, currentUser, posts });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });

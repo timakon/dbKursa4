@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+</head>
+<body>
+    <a href="/">Вернуться назад</a>
+    <h1>Регистрация</h1>
+    <form action="/users/register" method="POST">
+        <label for="username">Логин:</label>
+        <input type="text" name="username" id="username" required>
+
+        <label for="email">Email:</label>
+        <input type="text" name="email" id="email" required>
+
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" id="password" required>
+
+        <label for="role">Роль:</label>
+        <select id="role" name="role" required>
+            <option value="">-- Please choose an option --</option>
+            <option value="admin">Админ</option>
+            <option value="moderator">Модератор</option>
+            <option value="user">Просто пользователь</option>
+        </select>
+        
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <p>Уже зарегистрированы? <a href="login">Войти</a></p>
+</body>
+</html>

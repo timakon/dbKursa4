@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Создать группу</title>
+</head>
+<body>
+    <a href="/groups">Вернуться назад</a>
+    <h1>Создать группу</h1>
+    <form action="/groups/create" method="POST">
+        <label for="name">Название группы:</label>
+        <input type="text" name="name" id="name" required>
+
+        <label for="description">Описание группы:</label>
+        <textarea name="description" id="description"></textarea>
+
+        <input type="hidden" name="ownerId" value="<%= userId %>">
+
+        <button type="submit">Создать группу</button>
+    </form>
+</body>
+</html>
