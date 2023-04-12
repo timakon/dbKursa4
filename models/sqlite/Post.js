@@ -1,4 +1,3 @@
-// models/sqlite/Post.js
 const { Sequelize, DataTypes } = require('sequelize');
 const config = require('../../config/sqlite');
 const sequelize = new Sequelize(config);
@@ -23,7 +22,7 @@ const Post = sequelize.define('post', {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Group',
+      model: 'groups', 
       key: 'id',
       onDelete: 'CASCADE'
     }
@@ -34,6 +33,18 @@ const Post = sequelize.define('post', {
   }
 });
 
+const Comment = require('./Comment');
+
+Post.hasMany(Comment, {
+  foreignKey: 'postId',
+  as: 'comments'
+});
+
+Comment.belongsTo(Post, {
+  foreignKey: 'postId',
+  as: 'post'
+});
+
 (async () => {
   try {
     await sequelize.sync();
@@ -42,5 +53,6 @@ const Post = sequelize.define('post', {
     console.error('Error creating/checking SQLite "posts" table:', error);
   }
 })();
+
 
 module.exports = Post;

@@ -6,7 +6,6 @@ exports.getProfileByUserId = async (req, res) => {
     const user = await Profile.findById({_id:req.params.id});
     const posts = await Posts.find({ user_id: req.params.id });
 
-    console.log(user);
     res.render('user', { user, posts });
   } catch (error) {
     console.error(error);
@@ -16,7 +15,6 @@ exports.getProfileByUserId = async (req, res) => {
   exports.updateProfileByUserId = async (req, res) => {
     const userId = req.params.id;
     const updatedProfileData = req.body;
-    console.log(updatedProfileData)
   
     try {
       const updatedProfile = await Profile.findOneAndUpdate(

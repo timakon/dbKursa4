@@ -24,6 +24,32 @@ const Group = sequelize.define('group', {
   }
 });
 
+const Post = require('./Post');
+
+Group.hasMany(Post, {
+  foreignKey: 'groupId',
+  as: 'posts'
+});
+
+Post.belongsTo(Group, {
+  foreignKey: 'groupId',
+  as: 'group'
+});
+
+
+const GroupMember = require('./GroupMember');
+
+Group.hasMany(GroupMember, {
+  foreignKey: 'groupId',
+  as: 'members'
+});
+
+GroupMember.belongsTo(Group, {
+  foreignKey: 'groupId',
+  as: 'group'
+});
+
+
 // Добавьте этот код после объявления модели Group
 (async () => {
   try {

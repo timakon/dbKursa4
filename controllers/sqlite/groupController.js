@@ -1,5 +1,7 @@
 const Group = require('../../models/sqlite/Group');
 const Post = require('../../models/sqlite/Post');
+const GroupMember = require('../../models/sqlite/GroupMember');
+const Comment = require('../../models/sqlite/Comment');
 
 // Создать новую группу
 exports.createGroup = async (req, res) => {
@@ -31,13 +33,35 @@ exports.getGroups = async (req, res) => {
 exports.getGroup = async (req, res) => {
   try {
     const groupId = req.params.groupId;
-    const posts = await Post.findAll({ where: { groupId } }); // Получаем посты только для текущей группы
     const currentUser = req.cookies.userId;
-    const group = await Group.findByPk(groupId);
-    
-    res.render('group', { group, currentUser, posts });
+    const group = await Group.findByPk(groupId, {
+      include: [
+        {
+          model: Post,
+          as: 'posts',
+          include: [
+            {
+              model: Comment,
+              as: 'comments'
+            }
+          ]
+        },
+        {
+          model: GroupMember,
+          as: 'members'
+        }
+      ],
+      nest: true
+    });
+
+    // Проверить, является ли пользователь членом группы
+    const groupMember = await GroupMember.findOne({ where: { groupId: groupId, userId: currentUser } });
+    const isMember = groupMember !== null;
+
+    res.render('group', { group, currentUser, isMember });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
+

@@ -22,8 +22,7 @@ exports.registerUser = async (req, res) => {
     res.cookie('userRole', user.role);
     res.cookie('userId', user._id); // добавляем id пользователя в куки
 
-
-    res.status(201).json({ user, profile });
+    res.redirect("/")
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });
@@ -44,13 +43,13 @@ exports.loginUser = async (req, res) => {
 
     res.cookie('userRole', user.role);
     res.cookie('userId', user._id);
-    res.status(200).json({ user, profile });
+
+    res.redirect("/")
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
-
 
 exports.getUsers = async (req, res) => {
   try {
@@ -61,7 +60,6 @@ exports.getUsers = async (req, res) => {
     res.status(500).json({ error: 'Ошибка сервера' });
   }
 };
-
 
 exports.checkRules = (req, res) => {
 

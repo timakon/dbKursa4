@@ -2,18 +2,20 @@
 const Post = require('../../models/sqlite/Post');
 
 exports.createPost = async (req, res) => {
-
- console.log(req.body)
- console.log(req.params)
- console.log(req.cookies)
-  
   try {
-    const post = await Post.create({
-      content: req.body.content,
-      groupId: req.params,
-      userId: req.cookies.userId
-    });
-    res.status(201).json(post);
+    const groupId = req.params.groupId;
+    const userId = req.body.user_id;
+    const content = req.body.content;
+    const newPost = {
+      content: content,
+      userId: userId,
+      groupId: groupId,
+    };
+
+    await Post.create(newPost);
+
+    // Перенаправляем пользователя на страницу группы после создания поста
+    res.redirect(`/groups/${groupId}`);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });
