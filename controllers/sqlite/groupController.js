@@ -2,6 +2,7 @@ const Group = require('../../models/sqlite/Group');
 const Post = require('../../models/sqlite/Post');
 const GroupMember = require('../../models/sqlite/GroupMember');
 const Comment = require('../../models/sqlite/Comment');
+const Like = require('../../models/sqlite/Like');
 
 // Создать новую группу
 exports.createGroup = async (req, res) => {
