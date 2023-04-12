@@ -45,6 +45,18 @@ Comment.belongsTo(Post, {
   as: 'post'
 });
 
+const Like = require('./Like');
+
+Post.hasMany(Like, {
+  foreignKey: 'postId',
+  as: 'likedPost'
+});
+
+Like.belongsTo(Post, {
+  foreignKey: 'postId',
+  as: 'postLikes'
+});
+
 (async () => {
   try {
     await sequelize.sync();

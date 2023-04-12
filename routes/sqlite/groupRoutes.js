@@ -3,10 +3,10 @@ const router = express.Router();
 const groupController = require('../../controllers/sqlite/groupController');
 const groupMemberController = require('../../controllers/sqlite/groupMemberController');
 const commentController = require('../../controllers/sqlite/commentController')
-// const likesController = require('../controllers/likesController');
+const likesController = require('../../controllers/sqlite/likesController');
 
 
-// router.post('/groups/:groupId/posts/:postId/likes', likesController.createLike);
+router.post('/:groupId/posts/:postId/likes', likesController.createLike);
 
 router.post('/create', groupController.createGroup);
 router.get('/create', (req, res) => {

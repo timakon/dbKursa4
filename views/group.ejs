@@ -110,6 +110,14 @@
           </form>
         <% } %>
 
+        <p>Likes: <%= post.likedPost.length %></p>
+        <% if (isMember) { %>
+          <form method="POST" action="/groups/<%= group.id %>/posts/<%= post.id %>/likes">
+            <input type="hidden" name="user_id" value="<%= currentUser %>">
+            <button type="submit">Like</button>
+          </form>
+        <% } %>
+
         <h4>Comments</h4>
         <ul>
           <% (post.comments || []).forEach(comment => { %>
@@ -121,6 +129,8 @@
       </li>
     <% }) %>
   </ul>
+
+
 
   
 

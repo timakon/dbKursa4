@@ -12,7 +12,7 @@ exports.createGroup = async (req, res) => {
       description: req.body.description,
       ownerId: req.body.ownerId
     });
-    res.status(201).json(group);
+    res.redirect("/groups")
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Ошибка сервера' });
@@ -44,6 +44,10 @@ exports.getGroup = async (req, res) => {
             {
               model: Comment,
               as: 'comments'
+            },
+            {
+              model: Like,
+              as: 'likedPost'
             }
           ]
         },
